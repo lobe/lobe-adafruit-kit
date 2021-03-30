@@ -100,12 +100,12 @@ def main():
 		time.sleep(2)
 		
 		# Load all the images for the game
-		rock = load_image('rock.png', camera)
-		paper = load_image('paper.png', camera)
-		scissors = load_image('scissors.png', camera)
-		counter_one = load_image('one.png', camera)
-		counter_two = load_image('two.png', camera)
-		counter_three = load_image('three.png', camera)
+		rock = load_image('assets/rock.png', camera)
+		paper = load_image('assets/paper.png', camera)
+		scissors = load_image('assets/scissors.png', camera)
+		counter_one = load_image('assets/one.png', camera)
+		counter_two = load_image('assets/two.png', camera)
+		counter_three = load_image('assets/three.png', camera)
 
 
 		# Loop this section forever
