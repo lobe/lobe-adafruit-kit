@@ -53,13 +53,13 @@ def get_inputs():
 	return inputs
 
 # The 3 signs that a player may play
-signs = ['rock', 'paper', 'scissors']
+signs = ['Rock', 'Paper', 'Scissors']
 
 # Define the game logic in a dictionary.
 # The string on the left beats the string on the right.
-game_logic = {'rock' : 'paper',
-			  'paper' : 'scissors',
-			  'scissors' : 'rock'}
+game_logic = {'Rock' : 'Paper',
+			  'Paper' : 'Scissors',
+			  'Scissors' : 'Rock'}
 
 def load_image(path, camera) -> Image:
 	img = Image.open(path)
@@ -118,19 +118,22 @@ def main():
 				inputs = get_inputs()
 				time.sleep(0.1)
 			
+			# Clear annocated text
+			camera.annotate_text = ''
+
 			# Turn the opacity of the camera to 0
 			camera.preview.alpha = 0
 			
 			# Move the counter_one layer to the top
-			counter_one.layer = 3
-			time.sleep(1)
-			counter_one.layer = 0
-			counter_two.layer = 3
-			time.sleep(1)
-			counter_two.layer = 0
 			counter_three.layer = 3
 			time.sleep(1)
 			counter_three.layer = 0
+			counter_two.layer = 3
+			time.sleep(1)
+			counter_two.layer = 0
+			counter_one.layer = 3
+			time.sleep(1)
+			counter_one.layer = 0
 			camera.preview.alpha = 255
 			time.sleep(1)
 
@@ -146,15 +149,15 @@ def main():
 
 			# Show label over the camera preview
 			camera.annotate_text = label
-			time.sleep(0.5)
+			time.sleep(2)
 
 			computer_sign = random_sign()
 			
-			if (computer_sign == 'rock'):
+			if (computer_sign == 'Rock'):
 				rock.layer = 3
-			elif (computer_sign == 'paper'):
+			elif (computer_sign == 'Paper'):
 				paper.layer = 3
-			elif (computer_sign == 'scissors'):
+			elif (computer_sign == 'Scissors'):
 				scissors.layer = 3
 
 			time.sleep(2)
@@ -167,9 +170,9 @@ def main():
 			winner = compare_signs(label, computer_sign)
 
 			if (winner == 'player'):
-				camera.annotate_text = 'You Win'
+				camera.annotate_text = 'You Win!'
 			elif (winner == 'computer'):
-				camera.annotate_text = 'Pi Wins'
+				camera.annotate_text = 'You Lose...'
 			elif (winner == 'tie'):
 				camera.annotate_text = 'Tie'
 
