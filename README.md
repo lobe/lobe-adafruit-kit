@@ -5,7 +5,7 @@
 
 ## Machine Learning Kit
 
-We’ve worked together with Adafruit to offer a machine learning kit conceived from the ground up to help you bring your machine learning ideas to life. Specifically, the kit includes the Raspberry Pi board, a camera module to capture all your images and later use your model, and all the smaller components to connect the two together. You can buy the kit [here](link/to/tutorial).
+We’ve worked together with Adafruit to offer a machine learning kit conceived from the ground up to help you bring your machine learning ideas to life. Specifically, the kit includes the Raspberry Pi board, a camera module to capture all your images and later use your model, and all the smaller components to connect the two together. You can buy the kit [here](https://aka.ms/Lobe-Adafruit-Kit).
 
 ## Tutorials
 
@@ -18,7 +18,7 @@ The first tutorial is the easiest one to follow because it helps you recognize c
 Machine learning is a really powerful tool that can help computers recognize the things they see. In this second tutorial, we'll train a machine learning model that can recognize the rock, paper and scissors gestures, so we can play with it. Find the tutorial [here](link/to/tutorial).
 
 #### Package Detector
-We use machine learning to solve common tasks that are too tedious to do over and over, and this is the perfect example of something you can build at home. The third tutorial is a front door package detector. Find it [here](link/to/tutorial).
+We use machine learning to solve common tasks that are too tedious to do over and over, and this is the perfect example of something you can build at home. The third tutorial is a front door package detector that uses IFTTT. Find it [here](link/to/tutorial).
 
 ## Contributing
 
