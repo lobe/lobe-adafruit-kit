@@ -53,7 +53,7 @@ def get_inputs():
 	return inputs
 
 # Load the IFTTTT key from the environment variable on the Pi
-key = os.getenv('IFTTTKEYs')
+key = os.getenv('IFTTTKEY')
 
 def main():
 	model = ImageModel.load('~/model')
