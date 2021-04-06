@@ -5,6 +5,8 @@ from digitalio import DigitalInOut, Direction, Pull
 import picamera
 import io
 from PIL import Image
+from datetime import datetime
+import adafruit_dotstar
 
 BUTTON_PIN = board.D17
 JOYDOWN_PIN = board.D27
@@ -48,6 +50,18 @@ def get_inputs():
 		inputs.append(Input.SELECT)
 	return inputs
 
+DOTSTAR_DATA = board.D5
+DOTSTAR_CLOCK = board.D6
+
+GREEN = (255, 0, 0)
+OFF = (0, 0, 0)
+
+dots = adafruit_dotstar.DotStar(DOTSTAR_CLOCK, DOTSTAR_DATA, 3, brightness=0.2)
+
+def color_fill(color, wait):
+    dots.fill(color)
+    dots.show()
+    time.sleep(wait)
 
 def main():
 	with picamera.PiCamera(resolution=(224, 224), framerate=30) as camera:
@@ -55,15 +69,20 @@ def main():
 		camera.start_preview()
 		# Camera warm-up time
 		time.sleep(2)
-		i = 0
+
 		while True:
+			color_fill(OFF, 0)
+			camera.annotate_text = "Ready..."
 			stream.seek(0)
 			inputs = get_inputs()
-			camera.capture(stream, format='jpeg')
-			img = Image.open(stream)
-			if Input.UP in inputs:
-				img.save(f"{i}.jpg")
-				i += 1
+
+			if Input.BUTTON in inputs:
+				color_fill(GREEN, 0)
+				camera.annotate_text = None
+				camera.capture(stream, format='jpeg')
+				img = Image.open(stream)
+				img.save(f"{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.jpg")
+
 
 
 if __name__ == '__main__':
