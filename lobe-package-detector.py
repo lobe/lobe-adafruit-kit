@@ -61,7 +61,7 @@ RED = (0, 0, 255)
 GREEN = (255, 0, 0)
 OFF = (0, 0, 0)
 
-dots = adafruit_dotstar.DotStar(DOTSTAR_CLOCK, DOTSTAR_DATA, 3, brightness=0.2)
+dots = adafruit_dotstar.DotStar(DOTSTAR_CLOCK, DOTSTAR_DATA, 3, brightness=0.1)
 
 def color_fill(color, wait):
     dots.fill(color)
@@ -113,6 +113,8 @@ def main():
 
 			last_label = label
 
+			time.sleep(0.75)
+			
 			inputs = get_inputs()
 			# Check if the joystick is pushed up
 			if (Input.UP in inputs):

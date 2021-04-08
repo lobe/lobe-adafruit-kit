@@ -56,7 +56,7 @@ DOTSTAR_CLOCK = board.D6
 GREEN = (255, 0, 0)
 OFF = (0, 0, 0)
 
-dots = adafruit_dotstar.DotStar(DOTSTAR_CLOCK, DOTSTAR_DATA, 3, brightness=0.2)
+dots = adafruit_dotstar.DotStar(DOTSTAR_CLOCK, DOTSTAR_DATA, 3, brightness=0.1)
 
 def color_fill(color, wait):
     dots.fill(color)
