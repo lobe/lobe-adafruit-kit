@@ -60,6 +60,9 @@ def main():
 			# Print performance times
 			print(f"\rLabel: {label} | Confidence: {confidence*100: .2f}% | FPS: {1/total_time: .2f} | prediction fps: {1/predict_time: .2f} | {predict_time/total_time: .2f}", end='', flush=True)
 
+			# Wait for 1 second so the label is visible on the screen
+			time.sleep(1)
+
 
 if __name__ == '__main__':
 	try:

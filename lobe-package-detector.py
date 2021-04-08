@@ -108,7 +108,7 @@ def main():
 				last_label = 'package'
 
 				if (response.status_code == 401):
-					print(f'IFTTT Error: Your API key is invalid or has not been configured yet')
+					print(f'\nIFTTT Error: Your API key is invalid or has not been configured yet')
 				continue
 
 			last_label = label
@@ -119,7 +119,7 @@ def main():
 			# Check if the joystick is pushed up
 			if (Input.UP in inputs):
 				color_fill(GREEN, 0)
-				# If there isn't one already ceate a folder in the retraining folder for the current label
+				# Check if there is a folder to keep the retraining data, if it there isn't make it
 				if (not os.path.exists(f'./retraining_data/{label}')):
 					os.mkdir(f'./retraining_data/{label}')
 				# Remove the text annodtation

@@ -71,7 +71,6 @@ def main():
 		time.sleep(2)
 
 		while True:
-			color_fill(OFF, 0)
 			camera.annotate_text = "Ready..."
 			stream.seek(0)
 			inputs = get_inputs()
@@ -82,6 +81,9 @@ def main():
 				camera.capture(stream, format='jpeg')
 				img = Image.open(stream)
 				img.save(f"{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.jpg")
+			
+			color_fill(OFF, 0)
+			time.sleep(0.1)
 
 
 
