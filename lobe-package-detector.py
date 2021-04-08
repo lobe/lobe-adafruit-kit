@@ -8,6 +8,8 @@ from PIL import Image
 from lobe import ImageModel
 import os
 import requests
+import adafruit_dotstar
+from datetime import datetime
 
 # Boiler Plate code for buttons and joystick on the braincraft
 BUTTON_PIN = board.D17
@@ -52,6 +54,21 @@ def get_inputs():
 		inputs.append(Input.SELECT)
 	return inputs
 
+DOTSTAR_DATA = board.D5
+DOTSTAR_CLOCK = board.D6
+
+RED = (0, 0, 255)
+GREEN = (255, 0, 0)
+OFF = (0, 0, 0)
+
+dots = adafruit_dotstar.DotStar(DOTSTAR_CLOCK, DOTSTAR_DATA, 3, brightness=0.1)
+
+def color_fill(color, wait):
+    dots.fill(color)
+    dots.show()
+    time.sleep(wait)
+
+
 # Load the IFTTTT key from the environment variable on the Pi
 key = os.getenv('IFTTTKEY')
 
@@ -67,47 +84,72 @@ def main():
 		camera.start_preview()
 		# Camera warm-up time
 		time.sleep(2)
-		i = 0
+		label = ''
+		last_label = ''
 		while True:
 			stream.seek(0)
+			camera.annotate_text = None
 			camera.capture(stream, format='jpeg')
+			camera.annotate_text = label
 			img = Image.open(stream)
 			result = model.predict(img)
 			label = result.prediction
+			confidence = result.labels[0][1]
 			camera.annotate_text = label
-			print(f'\r{label}', end='', flush=True)
+			print(f'\rLabel: {label} | Confidence: {confidence*100: .2f}%', end='', flush=True)
 
 			# Check if the current label is package and that the label has changed since last tine the code ran
 			if (label == 'package' and last_label != 'package'):
+				
 				# Send an HTTP POST request to the IFTTT using the label and key
-				repsonse = requests.post(f'https://maker.ifttt.com/trigger/{label}/with/key/{key}')
-				print(repsonse.content.decode('utf-8'))
+				response = requests.post(f'https://maker.ifttt.com/trigger/{label}/with/key/{key}')
+
 				# Set the last label to package, so IFTTT is only triggered once per package
 				last_label = 'package'
+
+				if (response.status_code == 401):
+					print(f'\nIFTTT Error: Your API key is invalid or has not been configured yet')
 				continue
 
 			last_label = label
 
+			time.sleep(0.75)
+			
 			inputs = get_inputs()
-
 			# Check if the joystick is pushed up
 			if (Input.UP in inputs):
-				# If there isn't one already ceate a folder in the retraining folder for the current label
+				color_fill(GREEN, 0)
+				# Check if there is a folder to keep the retraining data, if it there isn't make it
 				if (not os.path.exists(f'./retraining_data/{label}')):
 					os.mkdir(f'./retraining_data/{label}')
 				# Remove the text annodtation
 				camera.annotate_text = None
+
+				# File name
+				name = datetime.now()
 				# Save the current frame
-				camera.capture(os.path.join(f'./retraining_data/{label}', f'{i}.jpg'))
-				i += 1
+				camera.capture(
+					os.path.join(
+						f'./retraining_data/{label}', 
+						f'{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.jpg'
+					)
+				)
+				
+				color_fill(OFF, 0)
 
 			# Check if the joystick is pushed down
 			elif (Input.DOWN in inputs or Input.BUTTON in inputs):
+				color_fill(RED, 0)
 				# Remove the text annodtation
 				camera.annotate_text = None
 				# Save the current frame to the top level retraining directory
-				camera.capture(os.path.join(f'./retraining_data', f"{i}.jpg"))
-				i += 1
+				camera.capture(
+					os.path.join(
+						f'./retraining_data',
+						f'{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.jpg'
+					)
+				)
+				color_fill(OFF, 0)
 
 
 if __name__ == '__main__':

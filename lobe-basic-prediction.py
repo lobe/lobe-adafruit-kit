@@ -23,6 +23,9 @@ def main():
 			# Start performance counter
 			start = time.perf_counter()
 
+			# Clear the last prediction text
+			camera.annotate_text = None
+
 			# Capture a single frame as a Pillow image
 			camera.capture(stream, format='jpeg')
 			img = Image.open(stream)
@@ -39,6 +42,9 @@ def main():
 			# Get the prediction label
 			label = result.prediction
 
+			# Get the confidence for the top label
+			confidence = result.labels[0][1]
+
 			# Add label text to camera preview
 			camera.annotate_text = label
 
@@ -52,7 +58,10 @@ def main():
 			total_time = end - start
 
 			# Print performance times
-			print(f"\rFPS: {1/total_time: .2f} | prediction fps: {1/predict_time: .2f} | {predict_time/total_time: .2f}", end='', flush=True)
+			print(f"\rLabel: {label} | Confidence: {confidence*100: .2f}% | FPS: {1/total_time: .2f} | prediction fps: {1/predict_time: .2f} | {predict_time/total_time: .2f}", end='', flush=True)
+
+			# Wait for 1 second so the label is visible on the screen
+			time.sleep(1)
 
 
 if __name__ == '__main__':
